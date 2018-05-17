@@ -113,4 +113,145 @@
      if (a > b) zero else combine(f(a), mapReduce(f, combine, zero)(a + 1, b))
    ```
 
-9. ​
+9. Example: Fixed point
+
+   ```scala
+   def abs(x: Double) = if (x > 0) x else -x
+   val tolerance = 0.0001
+   def isCloseEnough(x: Double, y: Double) =
+     abs((x - y) / x) / x < tolerance
+   def fixedPoint(f: Double => Double)(firstGuess: Double) = {
+     def iterate(guess: Double): Double = {
+       val next = f(guess)
+       if (isCloseEnough(guess, next)) next
+       else iterate(next)
+     }
+     iterate(firstGuess)
+   }
+
+   fixedPoint(x => 1 + x / 2)(1)
+
+   // infinite loop
+   def sqrt_infloop(x: Double) =
+     fixedPoint(y => x / y)(1.0)
+
+   //sqrt(3)
+
+   def sqrt(x: Double) =
+     fixedPoint(y => (y + x / y) / 2)(1.0)
+
+   sqrt(3)
+   ```
+
+10. Exercise: 
+
+  ```scala
+  def averageDump(f: Double => Double)(x: Double) = (x + f(x)) / 2
+  // my version
+  def sqrt2(x: Double) =
+    fixedPoint(averageDump(y => x / y))(1.0)
+  ```
+
+11. class
+
+   ```scala
+   class Rational(x: Int, y: Int) {
+     def numer = x
+     def denom = y
+
+     def add(that: Rational) = new Rational(
+         numer * that.denom + that.numer * denom,
+         denom * that.denom)
+
+     override def toString = numer + "/" + denom
+
+     def neg = new Rational(-numer, denom)
+
+     //def sub(that: Rational) = new Rational(
+     //  numer * that.denom - that.numer * denom,
+     //  denom * that.denom
+     //)
+     def sub(that: Rational) = add(that.neg)
+   }
+
+   val x = new Rational(1, 3)
+   val y = new Rational(5, 7)
+   val z = new Rational(3, 2)
+   x.add(y)
+   x.sub(y)
+   x.sub(y).sub(z)
+   ```
+
+12. class new version
+
+   ```scala
+   class Rational(x: Int, y: Int) {
+     require(y != 0, "denominator must be nonzero")
+
+     def this(x: Int) = this(x, 1)
+
+     private def gcd(a: Int, b: Int): Int = if (b == 0) a else gcd(b, a % b)
+     private val g = gcd(x, y)
+     def numer = x / g
+     def denom = y / g
+
+     //def add(that: Rational) = new Rational(
+     def + (that: Rational) = new Rational(
+         numer * that.denom + that.numer * denom,
+         denom * that.denom)
+
+     override def toString = numer + "/" + denom
+
+     // def neg = new Rational(-numer, denom)
+     def unary_- : Rational = new Rational(-numer, denom)
+     //def sub(that: Rational) = new Rational(
+     //  numer * that.denom - that.numer * denom,
+     //  denom * that.denom
+     //)
+     def - (that: Rational) = this + -that
+
+     //def less(that: Rational) = numer * that.denom < that.numer * denom
+     def < (that: Rational) = numer * that.denom < that.numer * denom
+
+     def max(that: Rational) = if (this < (that)) that else this
+   }
+   ```
+
+   ​
+
+13. Exercise
+
+   (all letter)
+
+   |
+
+   ^
+
+   &
+
+   < >
+
+   = !
+
+   :
+
+   \+ \-
+
+   \* / %
+
+   other
+
+   ```scala
+   a + b ^? c ?^ d less a ===> b | c
+   a + b ^? (c ?^ d) less a ===> b | c
+   (a + b) ^? (c ?^ d) less (a ===> b) | c
+   ((a + b) ^? (c ?^ d)) less (a ===> b) | c
+   ((a + b) ^? (c ?^ d)) less ((a ===> b) | c)
+
+
+
+
+
+   ```
+
+   ​

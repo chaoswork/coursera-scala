@@ -8,8 +8,6 @@
    def constOne(x: Int, y: => Int) = 1
    ```
 
-   ​
-
 3. `def` form is "by-name",`val` form is "by-value"
 
 4. 一个理解by-name和by-value的例子
@@ -25,7 +23,7 @@
    // or(x, y) == x || y
 
    def and(x: Boolean, y: Boolean) = 
-   	if (x) y else false
+     if (x) y else false
 
    and(true, false) // ok
    and(true, true) // ok
@@ -33,7 +31,7 @@
 
    // correct it using =>, call-by-name
    def and(x: Boolean, y: => Boolean) = 
-   	if (x) y else false
+     if (x) y else false
    ```
 
 ## SQRT FUCTION
@@ -43,9 +41,9 @@
    ```scala
    // my implemetation
    def sqrt(x: Double) = {
-   	var y = 1.0
-   	while (Math.abs(y * y - x) > 0.0001) {y = (y + x / y) / 2}
-   	y
+       var y = 1.0
+       while (Math.abs(y * y - x) > 0.0001) {y = (y + x / y) / 2}
+       y
    }
    ```
 
@@ -65,12 +63,12 @@
    def improve(guess: Double, x: Double) =
      (guess + x / guess) / 2
 
-
    def sqrtIter(guess: Double, x: Double): Double =
-     if (isGoodEnough(guess, x)) guess
-     else sqrtIter(improve(guess, x), x)
+       if (isGoodEnough(guess, x)) guess
+       else sqrtIter(improve(guess, x), x)
 
    def sqrt(x: Double) = sqrtIter(1.0, x)
+
    ```
 
 3. sqrt function: martin version two
@@ -84,7 +82,6 @@
 
    def improve(guess: Double, x: Double) =
      (guess + x / guess) / 2
-
 
    def sqrtIter(guess: Double, x: Double): Double =
      if (isGoodEnough(guess, x)) guess
@@ -106,14 +103,15 @@
      def improve(guess: Double) =
        (guess + x / guess) / 2
 
-
      def sqrtIter(guess: Double): Double =
        if (isGoodEnough(guess)) guess
        else sqrtIter(improve(guess))
-
      sqrtIter(1.0)
    }
-   // block problem
+   ```
+
+5. block problem
+   ```scala
    val x = 0
    def f(y: Int) = y + 1
    val result = {
@@ -129,7 +127,7 @@
 
    ```scala
    def gcd(a: Int, b: Int): Int = 
-   	if (b == 0) a else gcd(b, a % b)
+       if (b == 0) a else gcd(b, a % b)
    // gcd(14, 21)
    // if (21 == 0) 14 else gcd(21, 14 % 21)
    // gcd(21, 14)
@@ -138,7 +136,7 @@
    // 7
 
    def factorial(n: Int): Int = 
-   	if (n == 1) n else n * factorial(n - 1)
+       if (n == 1) n else n * factorial(n - 1)
    // factorial(4)
    // 4 * factorial(3)
    // 4 * 3 * factorial(2)
